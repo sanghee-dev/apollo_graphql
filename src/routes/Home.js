@@ -4,17 +4,22 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+const Loading = styled.h1`
+  font-size: 20px;
+`;
+const MovieContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-auto-rows: minmax(150px, 1fr);
   gap: 10px;
 `;
-const Grid = styled.div`
-  border: 1px solid black;
+const Movie = styled.div`
   display: flex;
   justify-content: center;
 `;
-const Text = styled.h1``;
 const Image = styled.img`
   width: 100px;
   height: 150px;
@@ -37,17 +42,23 @@ const Home = () => {
   console.log(loading, error, data);
 
   return (
-    <Container>
+    <Container
+      style={{
+        display: loading ? "flex" : "block",
+        justifyContent: loading ? "center" : "",
+        alignItems: loading ? "center" : "",
+      }}
+    >
       {loading ? (
-        <Text>loading...</Text>
+        <Loading>loading...</Loading>
       ) : (
-        <>
+        <MovieContainer>
           {data.movies.map((movie) => (
-            <Grid key={movie.id}>
+            <Movie key={movie.id}>
               <Image key={movie.id} imageUrl={movie.medium_cover_image} />
-            </Grid>
+            </Movie>
           ))}
-        </>
+        </MovieContainer>
       )}
     </Container>
   );
